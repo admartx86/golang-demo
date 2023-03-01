@@ -34,19 +34,29 @@ func update(screen *ebiten.Image) error {
 	screen.Fill(color.RGBA{10, 66, 202, 191})
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
-		sprite.X -= 1
+		sprite.X -= 5
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) {
-		sprite.X += 1
+		sprite.X += 5
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyS) {
-		sprite.Y += 1
+		sprite.Y += 5
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
-		sprite.Y -= 1
+		sprite.Y -= 5
 	}
 
-	screen.DrawImage(spriteImage, &ebiten.DrawImageOptions{})
+	//screen.DrawImage(spriteImage, &ebiten.DrawImageOptions{})
+
+	screen.DrawImage(spriteImage, &ebiten.DrawImageOptions{
+		GeoM:          ebiten.TranslateGeo(sprite.X, sprite.Y),
+		ColorM:        ebiten.ColorM{},
+		CompositeMode: 0,
+		Filter:        0,
+		ImageParts:    nil,
+		//Parts:         []ebiten.ImagePart{},
+		//SourceRect:    &image.Rectangle{},
+	})
 
 	return nil
 }
