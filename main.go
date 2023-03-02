@@ -105,6 +105,28 @@ func update(screen *ebiten.Image) error {
 	positionText := fmt.Sprintf("Sprite position: (%v, %v)", sprite.X, sprite.Y)
 	ebitenutil.DebugPrint(screen, positionText)
 
+	for i := len(meats) - 1; i >= 0; i-- {
+		meat := meats[i]
+		//meatRect := image.Rect(int(meat.X), int(meat.Y), int(meat.X)+meatImage.Bounds().Dx(), int(meat.Y)+meatImage.Bounds().Dy())
+		meatRect := image.Rect(int(meat.X), int(meat.Y), int(meat.X+float64(meatImage.Bounds().Dx())), int(meat.Y+float64(meatImage.Bounds().Dy())))
+		//meatRect := image.Rect(int(meat.X), int(meat.Y), int(meat.X+meatImage.Bounds().Size().X), int(meat.Y+meatImage.Bounds().Size().Y))
+		spriteRect := image.Rect(int(sprite.X), int(sprite.Y), int(sprite.X)+spriteImage.Bounds().Dx(), int(sprite.Y)+spriteImage.Bounds().Dy())
+
+		if spriteRect.Overlaps(meatRect) {
+			// remove the meat from the list
+			meats = append(meats[:i], meats[i+1:]...)
+		} else {
+			// draw the meat
+			geo3 := ebiten.GeoM{}
+			geo3.Translate(meat.X, meat.Y)
+			screen.DrawImage(meatImage, &ebiten.DrawImageOptions{
+				GeoM:          geo3,
+				ColorM:        ebiten.ColorM{},
+				CompositeMode: 0,
+			})
+		}
+	}
+
 	return nil
 
 }
